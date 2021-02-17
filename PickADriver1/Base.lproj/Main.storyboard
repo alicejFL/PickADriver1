@@ -33,7 +33,7 @@
                     <navigationItem key="navigationItem" id="rQi-9M-B7J">
                         <barButtonItem key="rightBarButtonItem" title="Item" image="plus" catalog="system" id="LmV-UD-CLm">
                             <connections>
-                                <action selector="onAddNameTapped:" destination="KRc-Vh-CZ4" id="WCK-wt-PFe"/>
+                                <action selector="onAddNameTapped:" destination="KRc-Vh-CZ4" id="x6X-sb-qHb"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
