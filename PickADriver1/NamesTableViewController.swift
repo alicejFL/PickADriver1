@@ -8,8 +8,8 @@
 import UIKit
 
 class NamesTableViewController: UITableViewController {
-    var names = ["Kelly", "Scott", "Heather", "Hilary", "Kris", "Chef", "DJ", "Ryan", "John", "Noah", "Tim", "Brooks"]
-    var period = 0
+    var names: [String] = []
+    var period = "0"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +29,7 @@ class NamesTableViewController: UITableViewController {
         let confirmAction = UIAlertAction(title: "OK", style: .default, handler: {(action) in
             if let name = nameField?.text {
                 self.names.append(name)
+                self.save()
                 self.tableView.reloadData()
             }
         })
@@ -69,6 +70,7 @@ class NamesTableViewController: UITableViewController {
         if editingStyle == .delete {
          //    Delete the row from the data source
             names.remove(at: indexPath.row)
+            save()
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
@@ -79,6 +81,7 @@ class NamesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
         let nameToMove = names.remove(at: fromIndexPath.row)
         names.insert(nameToMove, at: to.row)
+        save()
     }
     
 
@@ -90,6 +93,11 @@ class NamesTableViewController: UITableViewController {
     }
     
 
-
+    func save() {
+        if var savedNames = UserDefaults.standard.value(forKey: savedNamesUserDefaultsKey) as? [String: [String]] {
+            savedNames[period] = names
+            UserDefaults.standard.set(savedNames, forKey: savedNamesUserDefaultsKey)
+        }
+    }
 
 }

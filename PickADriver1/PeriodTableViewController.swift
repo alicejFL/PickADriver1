@@ -7,10 +7,12 @@
 
 import UIKit
 
+let savedNamesUserDefaultsKey = "names"
+
 class PeriodTableViewController: UITableViewController {
-    var names = [["Scott", "Heather", "Hilary", "Kris", "Chef", "DJ", "Ryan", "John", "Noah", "Tim", "Brooks"], ["Kelly", "Scott", "Heather", "Hilary", "Kris", "Chef", "DJ", "Ryan", "John", "Noah", "Tim", "Brooks"], ["Heather", "Hilary", "Kris", "Chef", "DJ", "Ryan", "John", "Noah", "Tim", "Brooks"], ["Hilary", "Kris", "Chef", "DJ", "Ryan", "John", "Noah", "Tim", "Brooks"], ["Kris", "Chef", "DJ", "Ryan", "John", "Noah", "Tim", "Brooks"], ["Chef", "DJ", "Ryan", "John", "Noah", "Tim", "Brooks"], ["Kelly", "Scott", "Heather", "Hilary", "Kris", "Chef"], ["Alice", "Ryan", "Delia", "JP"]]
+    var names: [String: [String]] = [:]
     var selectedNames: [String] = []
-    var selectedPeriod = 0
+    var selectedPeriod = "0"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,8 +25,8 @@ class PeriodTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedNames = names[indexPath.row]
-        selectedPeriod = indexPath.row + 1
+        selectedPeriod = String(indexPath.row + 1)
+        selectedNames = names[selectedPeriod] ?? []
         performSegue(withIdentifier: "PeriodToNames", sender: nil)
     }
    
@@ -41,5 +43,14 @@ class PeriodTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let savedNames = UserDefaults.standard.value(forKey: savedNamesUserDefaultsKey) as? [String: [String]] {
+            names = savedNames
+        }
+        else {
+            let empty: [String: [String]] = [:]
+            UserDefaults.standard.set(empty, forKey: savedNamesUserDefaultsKey)
+        }
+    }
 }
